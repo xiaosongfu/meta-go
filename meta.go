@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var meta *META
+var meta META
 
 type META struct {
 	// go compiler and os info
@@ -18,7 +18,7 @@ type META struct {
 	VCSRevision string
 	VCSTime     string
 
-	// app start up time
+	// app startup time
 	UpTime time.Time
 }
 
@@ -28,10 +28,8 @@ func init() {
 		return
 	}
 
-	meta := META{
-		GoVersion: bi.GoVersion,
-		UpTime:    time.Now(),
-	}
+	meta.GoVersion = bi.GoVersion
+	meta.UpTime = time.Now()
 
 	for _, s := range bi.Settings {
 		switch s.Key {
@@ -47,17 +45,17 @@ func init() {
 	}
 }
 
-// Meta return MEAT pointer.
+// Meta return the `META` instance's pointer.
 func Meta() *META {
-	return meta
+	return &meta
 }
 
-// Println use `fmt.Println` print to stdout.
+// Println print the result of `Text()` func to stdout.
 func Println() {
 	fmt.Println(Text())
 }
 
-// Text return a formatted string, or an empty string if some error occur.
+// Text return a formatted string of the `META` instance.
 func Text() string {
 	return fmt.Sprintf("GOVERSION:%s GOOS:%s GOARCH:%s VCSREVISION:%s VCSTIME:%s UPTIME:%s",
 		meta.GoVersion, meta.GoOS, meta.GoArch,
