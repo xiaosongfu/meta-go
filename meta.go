@@ -19,7 +19,8 @@ type META struct {
 	VCSTime     string
 
 	// app startup time
-	UpTime time.Time
+	UpTime          time.Time
+	UpTimeFormatted string // string value of using `time.RFC3339` formatted
 }
 
 func init() {
@@ -30,6 +31,7 @@ func init() {
 
 	meta.GoVersion = bi.GoVersion
 	meta.UpTime = time.Now()
+	meta.UpTimeFormatted = meta.UpTime.Format(time.RFC3339)
 
 	for _, s := range bi.Settings {
 		switch s.Key {
@@ -60,6 +62,6 @@ func Text() string {
 	return fmt.Sprintf("GOVERSION:%s GOOS:%s GOARCH:%s VCSREVISION:%s VCSTIME:%s UPTIME:%s",
 		meta.GoVersion, meta.GoOS, meta.GoArch,
 		meta.VCSRevision, meta.VCSTime,
-		meta.UpTime.Format(time.RFC3339),
+		meta.UpTimeFormatted,
 	)
 }
